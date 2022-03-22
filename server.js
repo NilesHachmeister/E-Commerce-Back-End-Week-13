@@ -16,5 +16,5 @@ sequelize.sync({ force: false }).then(() => {
 });
 
 
-// fix category put
+// fix category  and tag put
 // fix include issue
