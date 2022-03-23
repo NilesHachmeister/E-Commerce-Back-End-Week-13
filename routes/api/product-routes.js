@@ -3,40 +3,36 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
 
-// get all products
+// this allows the user to get all of the products, and returns the information back to them as json
 router.get('/', async (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
-
 
   try {
     const productData = await Product.findAll(
-      // {
-      //   include: [{ model: Category }, , { model: Tag }]
-      // }
+      {
+        include: [{ model: Category }, { model: Tag, through: ProductTag }]
+      }
     );
+
     if (!productData) {
       res.status(404).json({ message: 'There was no information' });
       return;
     }
+
     res.status(200).json(productData);
   } catch (err) {
     res.status(500).json(err);
   }
-
 });
 
-// get one product
+// this allows the user to get a speific product and returns the product back to them as json
 router.get('/:id', async (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
 
   try {
     const productData = await Product.findByPk(req.params.id
-      // ,
-      // {
-      //   include: [{ model: Category }, , { model: Tag }]
-      // }
+      ,
+      {
+        include: [{ model: Category }, { model: Tag, through: ProductTag }]
+      }
     );
     if (!productData) {
       res.status(404).json({ message: 'There was no information' });
@@ -46,11 +42,9 @@ router.get('/:id', async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
-
-
 });
 
-// create new product
+// this allows the user to create a new product
 router.post('/', (req, res) => {
   /* req.body should look like this...
     {
@@ -82,7 +76,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// update product
+// this allows the user to update a  product by id
 router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
@@ -124,9 +118,8 @@ router.put('/:id', (req, res) => {
     });
 });
 
+// this allows the user to delete a product by id
 router.delete('/:id', async (req, res) => {
-  // delete one product by its `id` value
-
 
   try {
     const productData = await Product.destroy({
@@ -144,7 +137,6 @@ router.delete('/:id', async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
-
 });
 
 module.exports = router;

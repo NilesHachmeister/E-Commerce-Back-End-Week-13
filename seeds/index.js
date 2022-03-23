@@ -5,6 +5,7 @@ const seedProductTags = require('./product-tag-seeds');
 
 const sequelize = require('../config/connection');
 
+// this function calls the different files that have login in them to seed the database
 const seedAll = async () => {
   await sequelize.sync({ force: true });
   console.log('\n----- DATABASE SYNCED -----\n');
@@ -23,4 +24,5 @@ const seedAll = async () => {
   process.exit(0);
 };
 
+// calling the function to seed the database
 seedAll();
